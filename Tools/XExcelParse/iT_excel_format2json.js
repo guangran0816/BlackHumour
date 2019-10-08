@@ -9,8 +9,6 @@
 var XLSX = require('xlsx');
 var fs = require('fs');
 var path = require('path');
-// var json2lua = require('json2lua');
-
 var iJson2Lua = require('./iJson2Lua');
 
 var RES_SUCCESS = 0;
@@ -58,27 +56,22 @@ let ExcelParse = {
 
         var _resErr = RES_SUCCESS;
 
-        reset = function () {
+        initialize = function () {
             _arrKeys = [];
             _arrTypes = [];
-
             _columns = 0;
 
             _resErr = RES_SUCCESS;
         }
 
         typeSupport = function (v) {
-            let idx = ExcelParse.supportType.indexOf(v);
-
-            if (idx != -1) {
-                return idx;
-            }
-
+            let st = v;
             if (v.substring(0, 5) == 'link_') {
-                return 4;
+                st = 'link';
             }
 
-            return -1;
+            let idx = ExcelParse.supportType.indexOf(st);
+            return idx;
         }
 
         getValue = function (v, idx) {
@@ -148,7 +141,6 @@ let ExcelParse = {
         }
 
         isComment = function (idx) {
-            // console.log('==', _arrKeys, idx);
             return _arrKeys[idx].indexOf('#') == 0
         }
 
@@ -279,7 +271,6 @@ let ExcelParse = {
 
                 if (!arrSheet[sheetname]) {
                     throw new Error(sheetname + " is Empty!!!");
-                    return ;
                 }
 
                 console.log('start handle ' + sheetname + ' sheet.');
@@ -321,7 +312,7 @@ let ExcelParse = {
         }
 
         excelParse.readSheet = function (worksheet) {
-            reset();
+            initialize();
 
             // keys
             do {
@@ -355,7 +346,7 @@ let ExcelParse = {
                 if (!cell || typeSupport(cell.v.toLowerCase()) == -1) {
                     _resErr = RES_DATA_FORMAT_ERR;
 
-                    throw new Error('data type error' + _data_type_line + ' ' + i);
+                    throw new Error('DATA TYPE ERROR: [' + _data_type_line + ' ' + i + ']');
                 }
 
                 let tmpType = cell.v.toLowerCase();
@@ -452,7 +443,6 @@ let ExcelParse = {
                         }
 
                         configData[tkvalue]['reward' + rewardidxstr] = rewardstr;
-
                     }
                 }
 
