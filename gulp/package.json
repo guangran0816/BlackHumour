@@ -1,0 +1,14 @@
+{
+  "name": "gulpfolder",
+  "version": "1.0.0",
+  "description": "##### Gulp是前端开发过程中对代码进行构建的工具，是自动化项目的构建利器，基于node.js。",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^4.0.2"
+  }
+}
